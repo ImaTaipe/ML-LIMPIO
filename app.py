@@ -2,6 +2,7 @@ from pathlib import Path
 import streamlit as st
 import cv2
 import av
+import random
 
 from ultralytics import YOLO
 from streamlit_webrtc import webrtc_streamer, VideoProcessorBase, RTCConfiguration
@@ -20,6 +21,63 @@ with col2:
         "https://upload.wikimedia.org/wikipedia/commons/2/22/UPN_-_Universidad_Privada_del_Norte.png",
         use_container_width=True
     )
+st.markdown("---")
+# ===========================================
+# DASHBOARD AMBIENTAL (SIMULADO)
+# ===========================================
+
+temperatura = round(random.uniform(20.0, 22.0), 1)
+humedad = random.randint(75, 90)
+
+if 20 <= temperatura <= 22 and 75 <= humedad <= 90:
+    estado_ambiente = "🟢 Ambiente Ideal"
+    color = "green"
+else:
+    estado_ambiente = "🟡 Revisar Ambiente"
+    color = "orange"
+
+st.subheader("🌡 Monitoreo Ambiental")
+
+col1, col2, col3 = st.columns(3)
+
+col1.metric(
+    "Temperatura",
+    f"{temperatura} °C"
+)
+
+col2.metric(
+    "Humedad",
+    f"{humedad} %"
+)
+
+col3.metric(
+    "Estado",
+    estado_ambiente
+)
+
+st.progress((humedad - 75) / 15)
+
+st.markdown(
+    f"""
+<div style="
+background:#f8f9fa;
+padding:15px;
+border-radius:10px;
+border-left:8px solid {color};
+">
+<b>Condición del ambiente:</b><br>
+
+Temperatura recomendada:
+<b>20°C - 22°C</b><br>
+
+Humedad recomendada:
+<b>75% - 90%</b>
+
+</div>
+""",
+unsafe_allow_html=True
+)
+
 st.markdown("---")
 
 st.markdown("""
